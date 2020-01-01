@@ -180,8 +180,12 @@ if __name__ == "__main__":
     if targetImgs.is_valid() and len(nonHentaiImgs.files) > 0 and len(hentaiImgs.files) > 0:
         if iniFile.prevNonHentaiImgNum == len(nonHentaiImgs.files) and iniFile.prevHentaiImgNum == len(hentaiImgs.files):
             updateRequired = False
+        else:
+            updateRequired = True
+        
         if len(targetImgs.files) != imgNum.maxNum:
             updateRequired = True
+
         if updateRequired:
             for f in targetImgs.files:
                 if os.path.exists(f):
@@ -198,6 +202,8 @@ if __name__ == "__main__":
                 copy2(f, targetImgs.folder)
             for f in hentaiImgs.imgs:
                 copy2(f, targetImgs.folder)
+            
+            print('Fully Updated!')
         else:
             remove_old_randImgs_in_target(iniFile.nonHentaiRandomImgs)
             remove_old_randImgs_in_target(iniFile.hentaiRandomImgs)
@@ -207,6 +213,9 @@ if __name__ == "__main__":
                 copy2(f, targetImgs.folder)
             for f in iniFile.hentaiRandomImgs:
                 copy2(f, targetImgs.folder)
+            
+            print('Partial Updated!')
         iniFile.save_ini()
     else:
+        print('***Error: There is no image folder.')
         sys.exit()
